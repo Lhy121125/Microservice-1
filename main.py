@@ -5,7 +5,7 @@ app=FastAPI()
 
 @app.get("/")
 async def base():
-    the_message = f"This is the AWS EC2 feature. To be continued..."
+    the_message = f"This is the AWS EC2 feature. \n We will use to do authentication:) \nTo be continued..."
     rsp = Response(content=the_message, media_type="text/plain")
     return rsp
 
