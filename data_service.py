@@ -22,10 +22,10 @@ class MySQLDataService:
             print("Unable to connect to the database.")
             print(e)
 
-    def close_connection(self, conn, cursor):
-        if cursor:
+    def close_connection(self):
+        if self.cursor:
             self.cursor.close()
-        if conn:
+        if self.conn:
             self.conn.close()
         self.conn, self.cursor = None, None
 
@@ -35,8 +35,9 @@ class MySQLDataService:
         try:
             self.cursor.execute(query=query)
             result = self.cursor.fetchall()
-            if len(result) > 1:
+            if len(result) != 1:
                 raise Exception("duplicate email")
+            result = result[0]
         except psycopg2.Error as e:
             print("read single record failed.")
             print(e)
@@ -48,6 +49,7 @@ class MySQLDataService:
         self.connect_to_db()
         try:
             self.cursor.execute(query=query)
+            self.conn.commit()
         except psycopg2.Error as e:
             print("insert single record failed.")
             print(e)

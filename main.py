@@ -21,10 +21,10 @@ async def get_user(email: str):
     return result
 
 
-@app.post("/users")
+@app.post("/users", response_model=str)
 async def post_user(user_data: UserModel):
     users_resource.insert_user(user_data)
-    return None
+    return "insert ok"
 
 
 @app.put("/users")
