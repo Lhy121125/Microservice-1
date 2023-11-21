@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, constr
 from data_service import MySQLDataService
 
+list_fields = ['id', 'email', 'name', 'school', 'role', 'additional_information']
 tup_fields = "(id, email, name, school, role, additional_information)"
 
 class UserModel(BaseModel):
@@ -29,15 +30,32 @@ class UserResource:
         self.table = "users"
 
     def get_user(self, email) -> UserModel:
-        query = f"select * from {self.table} where email='{email}'"
+        query = f"SELECT * FROM {self.table} WHERE EMAIL='{email}'"
         print("Full SQL = ", query)
         user_data = self.my_sql_data_service.read_single_record(query)
         user = create_user_model(user_data)
         return user
 
-    def insert_user(self, user_data):
+    def post_user(self, user_data):
         user = create_user_tuple(user_data)
-        query = f"insert into {self.table} {str(tup_fields)} " \
-                f"values {str(user)}"
+        query = f"INSERT INTO {self.table} {str(tup_fields)} " \
+                f"VALUES {str(user)}"
         print("Full SQL = ", query)
-        self.my_sql_data_service.insert_single_record(query)
+        self.my_sql_data_service.write_single_record(query)
+
+    def put_user(self, user_data):
+        user_data_new = user_data.model_dump()
+        email = user_data_new["email"]
+        user_data_old = self.get_user(email).model_dump()
+        changes = []
+        for f in list_fields:
+            if user_data_new[f] != user_data_old[f]:
+                changes.append(f"{f} = '{user_data_new[f]}'")
+        query = f"UPDATE {self.table} SET {', '.join(changes)} WHERE email = '{email}'"
+        print("Full SQL = ", query)
+        self.my_sql_data_service.write_single_record(query)
+
+    def delete_user(self, email):
+        query = f"DELETE FROM {self.table} WHERE email = '{email}'"
+        print("Full SQL = ", query)
+        self.my_sql_data_service.write_single_record(query)

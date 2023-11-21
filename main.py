@@ -15,7 +15,7 @@ async def base():
     return rsp
 
 
-@app.get("/users/id", response_model=UserModel)
+@app.get("/users", response_model=UserModel)
 async def get_user(email: str):
     result = users_resource.get_user(email)
     return result
@@ -23,19 +23,20 @@ async def get_user(email: str):
 
 @app.post("/users", response_model=str)
 async def post_user(user_data: UserModel):
-    users_resource.insert_user(user_data)
+    users_resource.post_user(user_data)
     return "insert ok"
 
 
 @app.put("/users")
-async def put_user():
-    pass
+async def put_user(user_data: UserModel):
+    users_resource.put_user(user_data)
+    return "update ok"
 
 
-@app.delete("/users/id")
-async def delete_user():
-    pass
-
+@app.delete("/users")
+async def delete_user(email: str):
+    users_resource.delete_user(email)
+    return "delete ok"
 
 #
 # @app.get("/companies/id")

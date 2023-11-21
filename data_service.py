@@ -35,8 +35,6 @@ class MySQLDataService:
         try:
             self.cursor.execute(query=query)
             result = self.cursor.fetchall()
-            if len(result) != 1:
-                raise Exception("duplicate email")
             result = result[0]
         except psycopg2.Error as e:
             print("read single record failed.")
@@ -45,7 +43,7 @@ class MySQLDataService:
             self.close_connection()
             return result
 
-    def insert_single_record(self, query):
+    def write_single_record(self, query):
         self.connect_to_db()
         try:
             self.cursor.execute(query=query)
