@@ -1,7 +1,6 @@
 from pydantic import BaseModel, EmailStr, constr
 from data_service import MySQLDataService
 from datetime import date
-from time import strftime, strptime
 
 list_fields = ["id", "name", "location", "industry", "inception_date"]
 tup_fields = "(id, name, location, industry, inception_date)"

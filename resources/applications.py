@@ -27,13 +27,13 @@ class ApplicationModel(BaseModel):
             )
 
     @classmethod
-    def create_user_tuple(cls, data):
+    def create_application_tuple(cls, data):
         data = data.dict()
         data_to_insert = (
             data["company_id"],
             data["job_id"],
             data["user_id"],
-            data["time_applied"],
+            data["time_applied"].strftime("%Y-%m-%d %H:%M:%S"),
             data["application_status"],
         )
         return data_to_insert
@@ -66,11 +66,11 @@ class ApplicationResource:
             data_new["job_id"],
             data_new["user_id"],
         )
-        data_old = self.get_user(company_id, job_id, user_id)
+        data_old = self.get_application(company_id, job_id, user_id)
         if data_old is None:
             return
         else:
-            data_old = data_old.dump()
+            data_old = data_old.model_dump()
 
         changes = []
         for f in list_fields:
