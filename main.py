@@ -116,7 +116,7 @@ async def put_application(data: ApplicationModel):
 
 @app.delete("/applications", response_model=str)
 async def delete_application(company_id: int, job_id: int, user_id: int):
-    applications_resource.delete_application(id)
+    applications_resource.delete_application(company_id, job_id, user_id)
     return "delete ok"
 
 
