@@ -3,7 +3,7 @@ from fastapi import FastAPI, Response
 from resources.users import UserModel, UserResource
 from resources.companies import CompanyModel, CompanyResource
 
-app = FastAPI()
+app = FastAPI(debug=True)
 users_resource = UserResource()
 companies_resource = CompanyResource()
 
@@ -41,22 +41,28 @@ async def delete_user(id: int):
     return "delete ok"
 
 
-#
-# @app.get("/companies/id")
-# async def get_company():
-#     pass
-#
-# @app.post("/companies")
-# async def post_company():
-#     pass
-#
-# @app.put("/companies")
-# async def put_company():
-#     pass
-#
-# @app.delete("/companies/id")
-# async def delete_company():
-#     pass
+@app.get("/companies", response_model=None)
+async def get_company(id: int) -> CompanyModel | None:
+    result = companies_resource.get_company(id)
+    return result
+
+
+@app.post("/companies", response_model=str)
+async def post_company(data: CompanyModel):
+    companies_resource.post_company(data)
+    return "insert ok"
+
+
+@app.put("/companies", response_model=str)
+async def put_company(data: CompanyModel):
+    companies_resource.put_company(data)
+    return "update ok"
+
+
+@app.delete("/companies", response_model=str)
+async def delete_company(id: int):
+    companies_resource.delete_company(id)
+    return "delete ok"
 
 
 if __name__ == "__main__":

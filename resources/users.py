@@ -15,7 +15,7 @@ class UserModel(BaseModel):
 
     @classmethod
     def create_user_model(cls, data):
-        if len(data) != 6:
+        if len(data) != len(list_fields):
             return None
         else:
             return cls(
@@ -74,6 +74,7 @@ class UserResource:
         for f in list_fields:
             if user_data_new[f] != user_data_old[f]:
                 changes.append(f"{f} = '{user_data_new[f]}'")
+
         query = f"UPDATE {self.table} SET {', '.join(changes)} WHERE id = {id}"
         print("Full SQL = ", query)
         self.my_sql_data_service.write_single_record(query)
