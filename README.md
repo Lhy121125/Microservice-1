@@ -1,7 +1,7 @@
 # Data-fetchers
-Microservice 1 deloying with EC2
-
-This will be our first microservice, and we will deploy it to EC2. It serves as a data fetcher that will fetch data from the single relational database and can insert Data.
+This will be our first microservice, and we will deploy it to EC2. 
+It serves as a data fetcher that will fetch data from the single relational database 
+and can insert Data.
 
 ### User Information (Just listing all potential path):
 GET	`/api/users/{id}` <br>
