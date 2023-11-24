@@ -16,13 +16,13 @@ POST	`/api/company/` <br>
 DELETE `api/company/` <br>
 
 ### Job Information
-GET	`/api/job/{id}`<br>
+GET	`/api/job/`<br>
 PUT	`/api/job/` <br>
 POST	`/api/job/` <br>
 DELETE `api/job/` <br>
 
 ### Application Information
-GET	`/api/job/{id}`<br>
+GET	`/api/job/`<br>
 PUT	`/api/job/` <br>
 POST	`/api/job/` <br>
 DELETE `api/job/` <br>
