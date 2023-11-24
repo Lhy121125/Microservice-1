@@ -51,7 +51,7 @@ class MySQLDataService:
             self.cursor.execute(query=query)
             self.conn.commit()
         except psycopg2.Error as e:
-            print("insert single record failed.")
+            print("write single record failed.")
             print(e)
         finally:
             self.close_connection()

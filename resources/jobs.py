@@ -16,7 +16,7 @@ tup_fields = "(id, company_id, job_title, department, location, employment_type,
 
 class JobModel(BaseModel):
     id: int
-    company_id: constr(max_length=255)
+    company_id: int
     job_title: constr(max_length=255)
     department: constr(max_length=255)
     location: constr(max_length=255)
@@ -46,6 +46,7 @@ class JobModel(BaseModel):
         data_to_insert = (
             data["id"],
             data["company_id"],
+            data["job_title"],
             data["department"],
             data["location"],
             data["employment_type"],
@@ -83,9 +84,10 @@ class JobResource:
         )
         data_old = self.get_job(id, company_id)
         if data_old is None:
+            print(f"Job where id = {id} and company_id = {company_id} not found.")
             return
         else:
-            data_old = data_old.dump()
+            data_old = data_old.model_dump()
 
         changes = []
         for f in list_fields:
