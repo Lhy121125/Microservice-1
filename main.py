@@ -10,14 +10,16 @@ companies_resource = CompanyResource()
 
 @app.get("/")
 async def base():
-    the_message = f"This is the AWS EC2 feature. \nWe will use it to do data-fetching:) "
+    the_message = (
+        f"This is the AWS EC2 feature. \nWe will use it to do data-fetching:) "
+    )
     rsp = Response(content=the_message, media_type="text/plain")
     return rsp
 
 
-@app.get("/users", response_model=UserModel)
-async def get_user(email: str):
-    result = users_resource.get_user(email)
+@app.get("/users", response_model=None)
+async def get_user(id: int) -> UserModel | None:
+    result = users_resource.get_user(id)
     return result
 
 
@@ -27,16 +29,17 @@ async def post_user(user_data: UserModel):
     return "insert ok"
 
 
-@app.put("/users")
+@app.put("/users", response_model=str)
 async def put_user(user_data: UserModel):
     users_resource.put_user(user_data)
     return "update ok"
 
 
-@app.delete("/users")
-async def delete_user(email: str):
-    users_resource.delete_user(email)
+@app.delete("/users", response_model=str)
+async def delete_user(id: int):
+    users_resource.delete_user(id)
     return "delete ok"
+
 
 #
 # @app.get("/companies/id")

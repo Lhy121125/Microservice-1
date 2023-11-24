@@ -4,17 +4,19 @@ from credentials import db_credentials
 
 class MySQLDataService:
     def __init__(self):
-        self.rds_endpoint = db_credentials['rds_endpoint']
-        self.db_name = db_credentials['db_name']
-        self.db_user = db_credentials['db_user']
-        self.db_password = db_credentials['db_password']
-        self.conn_string = f"dbname={self.db_name} " \
-                           f"user={self.db_user} " \
-                           f"password={self.db_password} " \
-                           f"host={self.rds_endpoint}"
+        self.rds_endpoint = db_credentials["rds_endpoint"]
+        self.db_name = db_credentials["db_name"]
+        self.db_user = db_credentials["db_user"]
+        self.db_password = db_credentials["db_password"]
+        self.conn_string = (
+            f"dbname={self.db_name} "
+            f"user={self.db_user} "
+            f"password={self.db_password} "
+            f"host={self.rds_endpoint}"
+        )
         self.conn, self.cursor = None, None
 
-    def connect_to_db(self):
+    def open_connection(self):
         try:
             self.conn = psycopg2.connect(self.conn_string)
             self.cursor = self.conn.cursor()
@@ -31,7 +33,7 @@ class MySQLDataService:
 
     def read_single_record(self, query):
         result = None
-        self.connect_to_db()
+        self.open_connection()
         try:
             self.cursor.execute(query=query)
             result = self.cursor.fetchall()
@@ -44,7 +46,7 @@ class MySQLDataService:
             return result
 
     def write_single_record(self, query):
-        self.connect_to_db()
+        self.open_connection()
         try:
             self.cursor.execute(query=query)
             self.conn.commit()
