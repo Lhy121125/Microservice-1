@@ -101,6 +101,11 @@ async def get_application(
     result = applications_resource.get_application(company_id, job_id, user_id)
     return result
 
+@app.get("/applications/{id}", response_model=None)
+async def get_application(id:int) -> ApplicationModel | None:
+    result = applications_resource.get_all_applications(id)
+    return result
+
 
 @app.post("/applications", response_model=str)
 async def post_application(data: ApplicationModel):

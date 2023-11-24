@@ -51,6 +51,15 @@ class ApplicationResource:
         application = ApplicationModel.create_application_model(data)
         return application
 
+    def get_all_applications(self, user_id):
+        query = f"SELECT * FROM {self.table} WHERE user_id = {user_id}"
+        print("Full SQL = ", query)
+        data = self.my_sql_data_service.read_all_records(query)
+        applications = []
+        for line in data:
+            applications.append(ApplicationModel.create_application_model(line))
+        return applications
+
     def post_application(self, data):
         application = ApplicationModel.create_application_tuple(data)
         query = (

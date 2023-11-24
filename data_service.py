@@ -55,3 +55,16 @@ class MySQLDataService:
             print(e)
         finally:
             self.close_connection()
+
+    def read_all_records(self, query):
+        results = []
+        self.open_connection()
+        try:
+            self.cursor.execute(query=query)
+            results = self.cursor.fetchall()
+        except psycopg2.Error as e:
+            print("read all records failed.")
+            print(e)
+        finally:
+            self.close_connection()
+            return results
