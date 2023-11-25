@@ -4,6 +4,7 @@ from resources.users import UserModel, UserResource
 from resources.companies import CompanyModel, CompanyResource
 from resources.applications import ApplicationModel, ApplicationResource
 from resources.jobs import JobModel, JobResource
+import requests
 
 
 app = FastAPI(debug=True)
@@ -11,7 +12,7 @@ users_resource = UserResource()
 companies_resource = CompanyResource()
 applications_resource = ApplicationResource()
 jobs_resource = JobResource()
-
+email_api = "insert your email api here"
 
 @app.get("/")
 async def base():
@@ -122,6 +123,14 @@ async def put_application(data: ApplicationModel):
 @app.delete("/applications", response_model=str)
 async def delete_application(company_id: int, job_id: int, user_id: int):
     applications_resource.delete_application(company_id, job_id, user_id)
+    user = users_resource.get_user(user_id)
+    email = user.email
+    to_send = {
+        "to": email,
+        "subject": "ApplicationHub - notification",
+        "body": "You have just deleted an application."
+    }
+    requests.post(email_api, json=to_send)
     return "delete ok"
 
 
