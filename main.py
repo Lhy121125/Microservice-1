@@ -24,7 +24,7 @@ async def base():
 
 
 @app.get("/users/{id}", response_model=None)
-async def get_user(id: int) -> UserModel | None:
+async def get_user(id: int):
     result = users_resource.get_user(id)
     return result
 
@@ -48,7 +48,7 @@ async def delete_user(id: int):
 
 
 @app.get("/companies/{id}", response_model=None)
-async def get_company(id: int) -> CompanyModel | None:
+async def get_company(id: int):
     result = companies_resource.get_company(id)
     return result
 
@@ -72,7 +72,7 @@ async def delete_company(id: int):
 
 
 @app.get("/jobs", response_model=None)
-async def get_job(id: int, company_id: int) -> JobModel | None:
+async def get_job(id: int, company_id: int):
     result = jobs_resource.get_job(id, company_id)
     return result
 
@@ -98,12 +98,12 @@ async def delete_job(id: int, company_id: int):
 @app.get("/applications", response_model=None)
 async def get_application(
     company_id: int, job_id: int, user_id: int
-) -> ApplicationModel | None:
+):
     result = applications_resource.get_application(company_id, job_id, user_id)
     return result
 
 @app.get("/applications/{id}", response_model=None)
-async def get_application(id:int) -> ApplicationModel | None:
+async def get_application(id:int):
     result = applications_resource.get_all_applications(id)
     return result
 
