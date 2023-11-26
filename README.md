@@ -3,7 +3,7 @@ This will be our first microservice, and we will deploy it to EC2.
 It serves as a data fetcher that will fetch data from the single relational database 
 and can insert Data.
 
-### User Information (Just listing all potential path):
+### User Information:
 GET	`/api/users/{id}` <br>
 PUT	`/api/users/` <br>
 POST	`/api/users/` <br>
@@ -17,6 +17,7 @@ DELETE `api/company/` <br>
 
 ### Job Information
 GET	`/api/job/`<br>
+GET `/api/jobs_all/`<br>
 PUT	`/api/job/` <br>
 POST	`/api/job/` <br>
 DELETE `api/job/` <br>
