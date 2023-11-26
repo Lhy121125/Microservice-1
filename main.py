@@ -24,8 +24,8 @@ async def base():
 
 
 @app.get("/users/{id}", response_model=None)
-async def get_user(id: int):
-    result = users_resource.get_user(id)
+async def get_user(id: int, page: int = 1, page_size: int = 1):
+    result = users_resource.get_user(id, page, page_size)
     return result
 
 
@@ -76,6 +76,10 @@ async def get_job(id: int, company_id: int):
     result = jobs_resource.get_job(id, company_id)
     return result
 
+@app.get("/jobs_all", response_model=None)
+async def get_all_jobs(page: int = 1, page_size: int = 1):
+    result = jobs_resource.get_all_jobs(page, page_size)
+    return result
 
 @app.post("/jobs", response_model=str)
 async def post_job(data: JobModel):

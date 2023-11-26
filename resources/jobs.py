@@ -70,6 +70,14 @@ class JobResource:
         job = JobModel.create_job_model(data)
         return job
 
+    def get_all_jobs(self, page, page_size):
+        offset = (page - 1) * page_size
+        query = f"SELECT * FROM {self.table} LIMIT {page_size} OFFSET {offset}"
+        print("Full SQL = ", query)
+        data = self.my_sql_data_service.read_all_records(query)
+        jobs = [JobModel.create_job_model(job) for job in data]
+        return jobs
+
     def post_job(self, data):
         job = JobModel.create_job_tuple(data)
         query = f"INSERT INTO {self.table} {str(tup_fields)} " f"VALUES {str(job)}"
