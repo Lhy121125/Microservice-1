@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String
 from . import Base
 
@@ -8,6 +9,9 @@ class Application(Base):
     user_id: int = Column(Integer, primary_key=True, index=True)
     time_applied: str = Column(String, nullable=False, unique=False)
     application_status: str = Column(String, nullable=False, unique=False)
+    
+    job = relationship("Job", backref="applications")
+    user = relationship("User", backref="applications")
 
     def as_dict(self):
         return {

@@ -1,9 +1,9 @@
 from sqlalchemy import delete, insert, select
-from sqlalchemy.orm import subqueryload,load_only
+from sqlalchemy.orm import subqueryload,load_only, joinedload
 
 from dbsession import get_session
 from helper import get_only_selected_fields, get_valid_data
-from models import application_model
+from models import application_model, job_model
 from scalars.application_scalar import AddApplication, Application, ApplicationDeleted, ApplicationExists, ApplicationNotFound
 
 
@@ -11,13 +11,15 @@ async def get_applications(info):
     """ Get all applications resolver """
     selected_fields = get_only_selected_fields(application_model.Application,info)
     async with get_session() as s:
-        sql = select(application_model.Application).options(load_only(*selected_fields)) \
+        sql = select(application_model.Application).options(joinedload(application_model.Application.job).joinedload(job_model.Job.company), subqueryload(application_model.Application.user)).options(load_only(*selected_fields))\
         .order_by(application_model.Application.user_id)
         db_applications = (await s.execute(sql)).scalars().unique().all()
 
     applications_data_list = []
     for application in db_applications:
         application_dict = get_valid_data(application,application_model.Application)
+        application_dict["job"] = application.job
+        application_dict["user"] = application.user
         applications_data_list.append(Application(**application_dict))
 
     return applications_data_list
@@ -26,12 +28,14 @@ async def get_application(user_id, job_id, company_id, info):
     """ Get specific application by id resolver """
     selected_fields = get_only_selected_fields(application_model.Application,info)
     async with get_session() as s:
-        sql = select(application_model.Application).options(load_only(*selected_fields)) \
+        sql = select(application_model.Application).options(joinedload(application_model.Application.job).joinedload(job_model.Job.company), subqueryload(application_model.Application.user)).options(load_only(*selected_fields)).o\
         .filter(application_model.Application.user_id == user_id and application_model.Application.job_id == job_id and application_model.Application.company_id == company_id) \
         .order_by(application_model.Application.user_id)
         db_application = (await s.execute(sql)).scalars().unique().one()
     
     application_dict = get_valid_data(db_application,application_model.Application)
+    application_dict["job"] = db_application.job
+    application_dict["user"] = db_application.user
     return Application(**application_dict)
 
 # async def delete_application(application_id):

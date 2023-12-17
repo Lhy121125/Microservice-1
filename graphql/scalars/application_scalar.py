@@ -1,6 +1,8 @@
 import strawberry
 from pydantic import Field, typing
 from datetime import date
+from scalars.job_scalar import Job
+from scalars.user_scalar import User
 
 @strawberry.type
 class Application:
@@ -9,6 +11,8 @@ class Application:
     user_id: int
     time_applied: typing.Optional[date]
     application_status: typing.Optional[str]
+    job: typing.Optional[typing.List[Job]] = Field(default_factory=list)
+    user: typing.Optional[typing.List[User]] = Field(default_factory=list)
 
 @strawberry.type
 class AddApplication:

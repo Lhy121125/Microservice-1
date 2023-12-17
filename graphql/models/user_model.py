@@ -1,9 +1,9 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from . import Base
 
 class User(Base):
     __tablename__ = "users"
-    id: int = Column(Integer, primary_key=True, index=True)
+    id: int = Column(Integer, ForeignKey("applications.user_id", ondelete='CASCADE'), primary_key=True, index=True)
     email: str = Column(String, nullable=False, unique=True)
     name: str = Column(String, nullable=False, unique=False)
     school: str = Column(String, nullable=False, unique=False)
