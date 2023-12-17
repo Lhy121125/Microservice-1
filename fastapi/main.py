@@ -6,7 +6,6 @@ from resources.applications import ApplicationModel, ApplicationResource
 from resources.jobs import JobModel, JobResource
 import requests
 
-
 app = FastAPI(debug=True)
 users_resource = UserResource()
 companies_resource = CompanyResource()

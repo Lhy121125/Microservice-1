@@ -14,3 +14,7 @@ psycopg2==2.9.9
 requests==2.31.0
 pydantic[email]
 psycopg2-binary
+graphene==3.0b6
+graphene-pydantic
+graphql-core==3.1.2
+graphql-relay==3.0.0

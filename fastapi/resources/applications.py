@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr, constr
-from data_service import MySQLDataService
+from pydantic import BaseModel
+from fastapi.data_service import MySQLDataService
 from datetime import date
 
 list_fields = ["company_id", "job_id", "user_id", "time_applied", "application_status"]
