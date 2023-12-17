@@ -1,5 +1,6 @@
 import strawberry
 from pydantic import Field, typing
+from scalars.company_scalar import Company
 
 @strawberry.type
 class Job:
@@ -11,6 +12,7 @@ class Job:
     employment_type: typing.Optional[str] = ""
     description: typing.Optional[str] = ""
     requirements: typing.Optional[str] = ""
+    company: typing.Optional[typing.List[Company]] = Field(default_factory=list)
 
 @strawberry.type
 class AddJob:

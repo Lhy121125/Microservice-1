@@ -11,13 +11,14 @@ async def get_jobs(info):
     """ Get all jobs resolver """
     selected_fields = get_only_selected_fields(job_model.Job,info)
     async with get_session() as s:
-        sql = select(job_model.Job).options(load_only(*selected_fields)) \
+        sql = select(job_model.Job).options(load_only(*selected_fields)).options(subqueryload(job_model.Job.company)) \
         .order_by(job_model.Job.job_title)
         db_jobs = (await s.execute(sql)).scalars().unique().all()
 
     jobs_data_list = []
     for job in db_jobs:
         job_dict = get_valid_data(job,job_model.Job)
+        job_dict["company"] = job.company
         jobs_data_list.append(Job(**job_dict))
 
     return jobs_data_list
@@ -27,10 +28,12 @@ async def get_job(id, company_id, info):
     selected_fields = get_only_selected_fields(job_model.Job,info)
     async with get_session() as s:
         sql = select(job_model.Job).options(load_only(*selected_fields)) \
-        .filter(job_model.Job.id == id and job_model.Job.company_id == company_id).order_by(job_model.Job.job_title)
+        .filter(job_model.Job.id == id and job_model.Job.company_id == company_id).options(subqueryload(job_model.Job.company)) \
+        .order_by(job_model.Job.job_title)
         db_job = (await s.execute(sql)).scalars().unique().one()
     
     job_dict = get_valid_data(db_job,job_model.Job)
+    job_dict["company"] = db_job.company
     return Job(**job_dict)
 
 async def delete_job(job_id):

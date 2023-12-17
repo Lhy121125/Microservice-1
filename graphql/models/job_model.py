@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from . import Base
 
 class Job(Base):
@@ -11,6 +12,7 @@ class Job(Base):
     employment_type: str = Column(String, nullable=False, unique=False)
     description: str = Column(String, nullable=False, unique=False)
     requirements: str = Column(String, nullable=False, unique=False)
+    company = relationship("Company", cascade="all, delete", passive_deletes=True)
 
     def as_dict(self):
         return {
