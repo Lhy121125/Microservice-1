@@ -1,5 +1,5 @@
 from pydantic import BaseModel, constr
-from fastapi.data_service import MySQLDataService
+from data_service import MySQLDataService
 
 list_fields = [
     "id",

@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, constr
-from fastapi.data_service import MySQLDataService
+from data_service import MySQLDataService
 
 list_fields = ["id", "email", "name", "school", "role", "additional_information"]
 tup_fields = "(id, email, name, school, role, additional_information)"
