@@ -5,13 +5,25 @@ from resources.companies import CompanyModel, CompanyResource
 from resources.applications import ApplicationModel, ApplicationResource
 from resources.jobs import JobModel, JobResource
 import requests
+import strawberry
+from strawberry.fastapi import GraphQLRouter
+from strawberry.schema.config import StrawberryConfig
+from schemas import Mutation
+from schemas import Query
 
 app = FastAPI(debug=True)
+
+# data-fetcher
 users_resource = UserResource()
 companies_resource = CompanyResource()
 applications_resource = ApplicationResource()
 jobs_resource = JobResource()
 email_api = "insert your email api here"
+
+# graphql interface
+schema = strawberry.Schema(query=Query,mutation=Mutation,config=StrawberryConfig(auto_camel_case=True))
+graphql_app = GraphQLRouter(schema)
+app.include_router(graphql_app, prefix="/graphql")
 
 @app.get("/")
 async def base():
@@ -20,7 +32,6 @@ async def base():
     )
     rsp = Response(content=the_message, media_type="text/plain")
     return rsp
-
 
 @app.get("/users/{id}", response_model=None)
 async def get_user(id: int, page: int = 1, page_size: int = 1):
